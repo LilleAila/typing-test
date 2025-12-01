@@ -21,7 +21,7 @@
     <script type="module" defer src="./script.js"></script>
   </head>
   <body>
-    <main>
+    <main id="main">
       <header>
         <h1>Typing test</h1>
         <p>
@@ -30,6 +30,11 @@
         </p>
         <hr />
       </header>
+
+      <div id="form-submitted">
+        <h2>Svaret ditt har blitt registrert.</h2>
+        <p>Du kan også få noen andre til å svare på den!</p>
+      </div>
 
       <form id="form">
         <h2>Spørreundersøkelse</h2>
@@ -92,7 +97,13 @@
             >Hvor mange sekunder tror du at du vil bruke på å skrive 25
             ord?</span
           >
-          <input type="number" min="1" placeholder="Tid i sekunder" required />
+          <input
+            type="number"
+            name="estimate"
+            min="1"
+            placeholder="Tid i sekunder"
+            required
+          />
         </label>
 
         <div class="test">
@@ -119,7 +130,7 @@
 
           <span id="seconds"></span>
 
-          <button id="new-test">Ta en ny test (tab)</button>
+          <button id="new-test">Start på nytt (tab)</button>
         </div>
 
         <button type="submit" id="submit" disabled>Send inn</button>

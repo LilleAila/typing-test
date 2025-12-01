@@ -186,3 +186,26 @@ button {
     filter: blur(1px);
   }
 }
+
+#main {
+  &:not(.submitted) {
+    #form-submitted {
+      display: none;
+    }
+  }
+
+  &.submitted {
+    #form {
+      display: none;
+    }
+  }
+}
+
+#form-submitted {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+}

@@ -1,3 +1,8 @@
+import PocketBase from "https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.26.2/pocketbase.es.mjs";
+
+// TODO: set up the backend
+const pb = new PocketBase("https://pb-typing.olai.dev");
+
 // Word list taken from monkeytype source code: https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/languages/english.json
 const language = await fetch("words.json").then((r) => r.json());
 const words = language.words;
@@ -36,6 +41,24 @@ const secondsResult = document.querySelector("#seconds");
 const newTestButton = document.querySelector("#new-test");
 const submitButton = document.querySelector("#submit");
 const form = document.querySelector("#form");
+
+// Essentially a way to tell clients to ignore the old values if it is ever desired
+const sessionTokenKey = "session_token";
+const submittedKey = "submitted_test1";
+let sessionToken;
+let submitted;
+
+function loadLocalStorage() {
+  sessionToken = localStorage.getItem(sessionTokenKey);
+  if (!sessionToken) {
+    sessionToken = crypto.randomUUID();
+    localStorage.setItem(sessionTokenKey, sessionToken);
+  }
+  submitted = JSON.parse(localStorage.getItem(submittedKey)) || false;
+  if (submitted) {
+    document.querySelector("#main").classList.add("submitted");
+  }
+}
 
 function newTest() {
   activeTest.started = false;
@@ -144,7 +167,7 @@ function endTest() {
     wpm: floorTo(wpm, 1),
     raw_wpm: floorTo(rawWpm, 1),
     accuracy: floorTo(accuracy, 1),
-    time: time,
+    time_ms: time,
   };
 
   const seconds = Math.floor(time / 1000);
@@ -213,16 +236,30 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("resize", centerNext);
 
 form.addEventListener("submit", (e) => {
-  const data = e.target;
+  let data = Object.fromEntries(new FormData(e.target));
 
-  // TODO: send a request to pocketbase and include
-  // results
-  // navigator.userAgent
-  // form data
+  for (let key of ["coding", "game", "instrument", "touch"]) {
+    data[key] = data[key] === "true";
+  }
+  data.class = data.class.toLowerCase();
+
+  const payload = {
+    session_token: sessionToken,
+    user_agent: navigator.userAgent, // TODO: also include hints https://chatgpt.com/share/692df6e8-3fb0-800d-9e01-71ddff70383a,
+    ...data,
+    ...results,
+  };
+
+  pb.collection("submissions").create(payload);
+
+  submitted = true;
+  localStorage.setItem(submittedKey, JSON.stringify(submitted));
 
   e.preventDefault();
+  // window.location.href = window.location.href;
 });
 
 (() => {
+  loadLocalStorage();
   newTest();
 })();
