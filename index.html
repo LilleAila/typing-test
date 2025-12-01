@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donkeytype</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="module" defer src="./script.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Donkeytype</h1>
+        <p>
+          Dette er en nettside inspirert av
+          <a href="https://monkeytype.com">MonkeyType</a>, der du kan teste hvor
+          fort du skriver!
+        </p>
+        <hr />
+      </header>
+
+      <article class="game">
+        <form id="config">
+          <label>
+            Words:
+            <input type="number" value="10" required min="1" name="wordCount" />
+          </label>
+          <button type="submit">Lagre</button>
+        </form>
+
+        <div class="test">
+          <div class="live-stats">
+            <span id="live-words"></span>
+            <span id="live-time"></span>
+          </div>
+
+          <div class="text-display"></div>
+
+          <input
+            id="text-input"
+            class="input"
+            type="text"
+            placeholder="Start typing..."
+            autocapitalize="off"
+            autocorrect="off"
+            autocomplete="off"
+            spellcheck="false"
+          />
+        </div>
+
+        <button id="new-test">New test (tab)</button>
+
+        <section>
+          <table class="stats">
+            <tbody></tbody>
+          </table>
+        </section>
+      </article>
+    </main>
+
+    <footer>
+      <p>
+        <small>&copy; 2025 Olai. All rights reserved.</small>
+      </p>
+    </footer>
+  </body>
+</html>
