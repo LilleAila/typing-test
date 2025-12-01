@@ -70,20 +70,28 @@ hr {
   }
 }
 
-.game {
+#form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
   gap: 1rem;
-  padding: 1rem;
+  padding: 1rem 5rem;
   box-sizing: border-box;
+
+  > label {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.2rem;
+  }
 }
 
 .live-stats {
   display: flex;
   width: 30%;
-  justify-content: space-between;
+  justify-content: center;
   font-family: "JetBrains Mono", monospace;
   color: var(--base04);
   font-size: 1.2rem;
@@ -137,40 +145,24 @@ button {
   padding: 0.5rem;
   border: 1px solid var(--base02);
   color: var(--base00);
-
   transition: transform 200ms ease;
 
-  &:hover {
-    transform: scale(1.2);
+  &[type="submit"] {
+    background-color: var(--base0B);
+    width: 50%;
   }
 
-  &:active {
+  &[disabled] {
+    opacity: 0.4;
+  }
+
+  &:hover:not([disabled]) {
     transform: scale(1.1);
   }
-}
 
-table {
-  width: 16rem;
-
-  td,
-  th {
-    padding: 0.5rem;
-
-    &.value {
-      font-famil: "JetBrains Mono", monospace;
-      text-align: right;
-    }
+  &:active:not([disabled]) {
+    transform: scale(1.05);
   }
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
 }
 
 .test {
@@ -182,8 +174,15 @@ input[type="number"] {
   padding: 1rem;
   box-sizing: border-box;
 
-  &.completed {
+  .test-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+  }
+
+  &.completed .test-content {
     opacity: 0.5;
-    filter: blur(2px);
+    filter: blur(1px);
   }
 }

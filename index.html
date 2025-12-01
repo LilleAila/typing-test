@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Donkeytype</title>
+    <title>Typing test</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
 
@@ -23,52 +23,107 @@
   <body>
     <main>
       <header>
-        <h1>Donkeytype</h1>
+        <h1>Typing test</h1>
         <p>
-          Dette er en nettside inspirert av
-          <a href="https://monkeytype.com">MonkeyType</a>, der du kan teste hvor
-          fort du skriver!
+          Ta testen og delta i spørreundersøkelsen under! Svar på PC for best
+          resultater.
         </p>
         <hr />
       </header>
 
-      <article class="game">
-        <form id="config">
+      <form id="form">
+        <h2>Spørreundersøkelse</h2>
+
+        <label>
+          <span>Hvilken klasse går du i?</span>
+          <input type="text" name="class" placeholder="Klassen din" required />
+        </label>
+
+        <label>
+          <span>Bruker du touch-metoden?</span>
           <label>
-            Words:
-            <input type="number" value="10" required min="1" name="wordCount" />
+            <input type="radio" name="touch" value="true" required />
+            Ja
           </label>
-          <button type="submit">Lagre</button>
-        </form>
+          <label>
+            <input type="radio" name="touch" value="false" />
+            Nei
+          </label>
+        </label>
+
+        <label>
+          <span>Spiller du et instrument?</span>
+          <label>
+            <input type="radio" name="instrument" value="true" required />
+            Ja
+          </label>
+          <label>
+            <input type="radio" name="instrument" value="false" />
+            Nei
+          </label>
+        </label>
+
+        <label>
+          <span>Spiller du dataspill?</span>
+          <label>
+            <input type="radio" name="game" value="true" required />
+            Ja
+          </label>
+          <label>
+            <input type="radio" name="game" value="false" />
+            Nei
+          </label>
+        </label>
+
+        <label>
+          <span>Driver du med programmering på fritiden?</span>
+          <label>
+            <input type="radio" name="coding" value="true" required />
+            Ja
+          </label>
+          <label>
+            <input type="radio" name="coding" value="false" />
+            Nei
+          </label>
+        </label>
+
+        <label>
+          <span
+            >Hvor mange sekunder tror du at du vil bruke på å skrive 25
+            ord?</span
+          >
+          <input type="number" min="1" placeholder="Tid i sekunder" required />
+        </label>
 
         <div class="test">
-          <div class="live-stats">
-            <span id="live-words"></span>
-            <span id="live-time"></span>
+          <h3>Ta testen under:</h3>
+
+          <div class="test-content">
+            <div class="live-stats">
+              <span id="live-words"></span>
+            </div>
+
+            <div class="text-display"></div>
+
+            <input
+              id="text-input"
+              class="input"
+              type="text"
+              placeholder="Start typing..."
+              autocapitalize="off"
+              autocorrect="off"
+              autocomplete="off"
+              spellcheck="false"
+            />
           </div>
 
-          <div class="text-display"></div>
+          <span id="seconds"></span>
 
-          <input
-            id="text-input"
-            class="input"
-            type="text"
-            placeholder="Start typing..."
-            autocapitalize="off"
-            autocorrect="off"
-            autocomplete="off"
-            spellcheck="false"
-          />
+          <button id="new-test">Ta en ny test (tab)</button>
         </div>
 
-        <button id="new-test">New test (tab)</button>
-
-        <section>
-          <table class="stats">
-            <tbody></tbody>
-          </table>
-        </section>
-      </article>
+        <button type="submit" id="submit" disabled>Send inn</button>
+      </form>
     </main>
 
     <footer>

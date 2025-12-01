@@ -10,12 +10,6 @@ function getWords(length) {
   return Array.from({ length }, () => randomFrom(words));
 }
 
-function removeChildren(elem) {
-  while (elem.firstChild) {
-    elem.removeChild(elem.firstChild);
-  }
-}
-
 function floorTo(x, n) {
   const decimals = 10 ** n;
   return Math.floor(x * decimals) / decimals;
@@ -23,34 +17,35 @@ function floorTo(x, n) {
 
 let activeTest = {
   started: false,
-  length: 10,
+  length: 25,
   words: [],
   currentWord: 0,
   interval: null,
 };
 
-const statsContainer = document.querySelector(".stats > tbody");
+let results = {};
+let finished = false;
+
 const wordContainer = document.querySelector(".text-display");
 const testContainer = document.querySelector(".test");
 const input = document.querySelector("#text-input");
-const configForm = document.querySelector("#config");
 
 const liveWords = document.querySelector("#live-words");
-const liveTime = document.querySelector("#live-time");
+const secondsResult = document.querySelector("#seconds");
 
 const newTestButton = document.querySelector("#new-test");
+const submitButton = document.querySelector("#submit");
+const form = document.querySelector("#form");
 
 function newTest() {
   activeTest.started = false;
   activeTest.currentWord = 0;
   input.disabled = false;
+  submitButton.disabled = true;
   input.value = "";
 
-  removeChildren(wordContainer);
-
-  setTimeout(() => {
-    removeChildren(statsContainer);
-  }, 150);
+  wordContainer.innerHTML = "";
+  secondsResult.innerHTML = "";
 
   activeTest.words = getWords(activeTest.length).map((w) => {
     return { word: w, passed: false, correct: false };
@@ -62,9 +57,6 @@ function newTest() {
   centerNext();
 
   startLiveUpdate();
-
-  input.focus();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 newTestButton.addEventListener("click", newTest);
@@ -122,18 +114,11 @@ function submitWord(typed) {
   centerNext();
 }
 
-function formatTime(ms, withMs = false) {
-  const minutes = Math.floor(ms / 60000);
-  const seconds = Math.floor((ms % 60000) / 1000);
-  const milliseconds = Math.floor((ms % 1000) / 10);
-
-  const msFormat = withMs ? `.${String(milliseconds).padEnd(2, "0")}` : "";
-  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}${msFormat}`;
-}
-
 function endTest() {
   input.disabled = true;
+  submitButton.disabled = false;
   testContainer.classList.add("completed");
+  finished = true;
 
   // Time is counted per word to make it easier to expand in the future.
   // The difference is negligible compared to only comparing start and end times
@@ -155,30 +140,15 @@ function endTest() {
   const wpm = (correctChars + spaces) / 5 / minutes;
   const accuracy = (correctChars / totalChars) * 100;
 
-  const stats = [
-    ["WPM", `${floorTo(wpm, 1)}`],
-    ["Raw WPM", `${floorTo(rawWpm, 1)}`],
-    ["Accuracy", `${floorTo(accuracy, 1)}%`],
-    ["Time", formatTime(time, true)],
-  ];
+  results = {
+    wpm: floorTo(wpm, 1),
+    raw_wpm: floorTo(rawWpm, 1),
+    accuracy: floorTo(accuracy, 1),
+    time: time,
+  };
 
-  for (const [k, v] of stats) {
-    const row = document.createElement("tr");
-
-    const key = document.createElement("td");
-    key.textContent = k;
-    key.classList.add("key");
-    row.appendChild(key);
-
-    const value = document.createElement("td");
-    value.textContent = v;
-    value.classList.add("value");
-    row.appendChild(value);
-
-    statsContainer.appendChild(row);
-  }
-
-  scrollTo(newTestButton, 12);
+  const seconds = Math.floor(time / 1000);
+  secondsResult.textContent = `Tid: ${seconds} sekunder`;
 
   clearInterval(activeTest.interval);
   updateLive();
@@ -204,18 +174,11 @@ function updateLive() {
   liveWords.textContent = `${activeTest.currentWord}/${activeTest.length}`;
 
   const now = new Date();
-  const timeDelta = now - (activeTest.words[0].start ?? now);
-  liveTime.textContent = formatTime(timeDelta);
 }
 
 function startLiveUpdate() {
   updateLive();
   activeTest.interval = setInterval(updateLive, 100);
-}
-
-function scrollTo(element, offset = 0) {
-  const y = element.getBoundingClientRect().top + window.pageYOffset - offset;
-  window.scrollTo({ top: y, behavior: "smooth" });
 }
 
 input.addEventListener("input", (e) => {
@@ -249,11 +212,15 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("resize", centerNext);
 
-configForm.addEventListener("submit", (e) => {
+form.addEventListener("submit", (e) => {
+  const data = e.target;
+
+  // TODO: send a request to pocketbase and include
+  // results
+  // navigator.userAgent
+  // form data
+
   e.preventDefault();
-  const form = e.target;
-  activeTest.length = parseInt(form.wordCount.value);
-  newTest();
 });
 
 (() => {

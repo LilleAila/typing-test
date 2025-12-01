@@ -14,3 +14,12 @@
 
 Frontend: Static HTML/JS
 Backend: Pocketbase
+
+## TODO
+
+- [ ] Pocketbase backend
+- [ ] Vurdere om norsk eller engelsk
+- [ ] Session tokens.
+  - Store a session token and a completed-status in localStorage
+  - Pocketbase denies create if a record already exists with that token
+  - Frontend does not allow submitting if it is already completed
