@@ -1,8 +1,8 @@
 import PocketBase from "https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.26.2/pocketbase.es.mjs";
 
 // TODO: set up the backend
-const pb_host = "http://127.0.0.1:8090";
-// const pb_host = "https://pb-typing.olai.dev";
+// const pb_host = "http://127.0.0.1:8090";
+const pb_host = "https://pb-typing.olai.dev";
 const pb = new PocketBase(pb_host);
 
 // Word list taken from monkeytype source code: https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/languages/english.json
