@@ -261,8 +261,6 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  return;
-
   submitted = true;
   localStorage.setItem(submittedKey, JSON.stringify(submitted));
 
