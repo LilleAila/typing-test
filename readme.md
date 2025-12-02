@@ -17,9 +17,9 @@ Backend: Pocketbase
 
 ## TODO
 
-- [ ] Pocketbase backend
+- [x] Pocketbase backend
 - [ ] Vurdere om norsk eller engelsk
-- [ ] Session tokens.
+- [x] Session tokens.
   - Store a session token and a completed-status in localStorage
   - Pocketbase denies create if a record already exists with that token
   - Frontend does not allow submitting if it is already completed

@@ -1,7 +1,9 @@
 import PocketBase from "https://cdnjs.cloudflare.com/ajax/libs/pocketbase/0.26.2/pocketbase.es.mjs";
 
 // TODO: set up the backend
-const pb = new PocketBase("https://pb-typing.olai.dev");
+const pb_host = "http://127.0.0.1:8090";
+// const pb_host = "https://pb-typing.olai.dev";
+const pb = new PocketBase(pb_host);
 
 // Word list taken from monkeytype source code: https://github.com/monkeytypegame/monkeytype/blob/master/frontend/static/languages/english.json
 const language = await fetch("words.json").then((r) => r.json());
@@ -235,13 +237,15 @@ document.addEventListener("keydown", (e) => {
 
 window.addEventListener("resize", centerNext);
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
   let data = Object.fromEntries(new FormData(e.target));
 
   for (let key of ["coding", "game", "instrument", "touch"]) {
     data[key] = data[key] === "true";
   }
   data.class = data.class.toLowerCase();
+  data.estimate = parseInt(data.estimate);
 
   const payload = {
     session_token: sessionToken,
@@ -250,16 +254,34 @@ form.addEventListener("submit", (e) => {
     ...results,
   };
 
-  pb.collection("submissions").create(payload);
+  try {
+    await pb.collection("submissions").create(payload);
+  } catch {
+    window.alert("Det oppstod en feil. Prøv igjen");
+    return;
+  }
 
   submitted = true;
   localStorage.setItem(submittedKey, JSON.stringify(submitted));
 
-  e.preventDefault();
-  // window.location.href = window.location.href;
+  window.location.href = window.location.href;
 });
 
 (() => {
   loadLocalStorage();
   newTest();
 })();
+
+// Example payload:
+// accuracy: 0
+// class: "2sth"
+// coding: true
+// estimate: 123
+// game: false
+// instrument: true
+// raw_wpm: 82.4
+// session_token: "0770f1f7-59b4-4f86-bc7b-632b09953104"
+// time_ms: 3057
+// touch: true
+// user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
+// wpm: 0

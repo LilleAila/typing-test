@@ -3,5 +3,6 @@ with import <nixpkgs> {}; mkShell {
     typescript-language-server
     prettier
     pocketbase
+    python3
   ];
 }
