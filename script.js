@@ -197,8 +197,6 @@ function centerNext() {
 
 function updateLive() {
   liveWords.textContent = `${activeTest.currentWord}/${activeTest.length}`;
-
-  const now = new Date();
 }
 
 function startLiveUpdate() {
