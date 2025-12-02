@@ -245,7 +245,7 @@ form.addEventListener("submit", async (e) => {
     data[key] = data[key] === "true";
   }
   data.class = data.class.toLowerCase();
-  data.estimate = parseInt(data.estimate);
+  data.estimate = 0;
 
   const payload = {
     session_token: sessionToken,
