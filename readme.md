@@ -18,8 +18,10 @@ Backend: Pocketbase
 ## TODO
 
 - [x] Pocketbase backend
-- [ ] Vurdere om norsk eller engelsk
+- [x] Vurdere om norsk eller engelsk - valgte engelsk
 - [x] Session tokens.
   - Store a session token and a completed-status in localStorage
   - Pocketbase denies create if a record already exists with that token
   - Frontend does not allow submitting if it is already completed
+- [ ] fjerne estimate, legge til alder
+- [ ] mulighet for folk som ikke er elever å svare (lærere, folk utenfor skolen, etc)
