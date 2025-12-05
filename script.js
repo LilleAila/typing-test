@@ -63,6 +63,7 @@ function loadLocalStorage() {
 }
 
 function newTest() {
+  finished = false;
   activeTest.started = false;
   activeTest.currentWord = 0;
   input.disabled = false;
@@ -237,6 +238,10 @@ window.addEventListener("resize", centerNext);
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+  if (!finished) {
+    window.alert("Du må gjøre ferdig skrivetesten!");
+    return;
+  }
   let data = Object.fromEntries(new FormData(e.target));
 
   for (let key of ["coding", "game", "instrument", "touch"]) {
